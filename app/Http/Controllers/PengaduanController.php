@@ -40,21 +40,24 @@ class PengaduanController extends Controller
     //     'putra_laporan' => 'required',
     //     'putra_gambar' => 'required|max:2048', // Validasi untuk file gambar
     // ]);
+    $putra_request->validate([
+        'putra_gambar' => 'required',
+    ]);
 
-    $fotoPath = null;
+    $putra_fotoPath = null;
 
     if ($putra_request->hasFile('putra_gambar')) {
-        $file = $putra_request->file('putra_gambar');
-        $extension = $file->getClientOriginalExtension();
-        $filenameToStore = Auth::guard('masyarakat')->user()->nama . '_' . time() . '.' . $extension;
-        $fotoPath = $file->storeAs('pengaduan', $filenameToStore, 'public');
+        $putra_file = $putra_request->file('putra_gambar');
+        $putra_extension = $putra_file->getClientOriginalExtension();
+        $putra_filenameToStore = Auth::guard('masyarakat')->user()->nama . '_' . time() . '.' . $putra_extension;
+        $putra_fotoPath = $putra_file->storeAs('pengaduan', $putra_filenameToStore, 'public');
     }
 
     pengaduan::create([
         'nik' => $putra_request->putra_nik,
         'tgl_pengaduan' => $putra_request->putra_tanggal,
         'isi_laporan' => $putra_request->putra_laporan,
-        'foto' => $fotoPath,
+        'foto' => $putra_fotoPath,
         'status' => '0'
     ]);
 

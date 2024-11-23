@@ -9,7 +9,7 @@ class ActivityLogController extends Controller
 {
     public function index()
     {
-        $actifitylog = actifitylog::all();
+        $putra_actifitylog = actifitylog::all();
         return view('admin.activitylog', compact('actifitylog'));
     }
 }

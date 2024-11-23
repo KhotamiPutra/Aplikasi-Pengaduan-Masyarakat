@@ -46,25 +46,25 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($pengaduans as $index => $pengaduan)
+                @foreach($putra_pengaduans as $putra_index => $putra_pengaduan)
                 <tr>
-                    <td class="border px-4 py-2">{{ $index + 1 }}</td>
-                    <td class="border px-4 py-2">{{ date('d/m/Y', strtotime($pengaduan->tgl_pengaduan)) }}</td>
-                    <td class="border px-4 py-2">{{ $pengaduan->nik }}</td>
-                    <td class="border px-4 py-2">{{ $pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</td>
-                    <td class="border px-4 py-2">{{ Str::limit($pengaduan->isi_laporan, 100) }}</td>
+                    <td class="border px-4 py-2">{{ $putra_index + 1 }}</td>
+                    <td class="border px-4 py-2">{{ date('d/m/Y', strtotime($putra_pengaduan->tgl_pengaduan)) }}</td>
+                    <td class="border px-4 py-2">{{ $putra_pengaduan->nik }}</td>
+                    <td class="border px-4 py-2">{{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</td>
+                    <td class="border px-4 py-2">{{ Str::limit($putra_pengaduan->isi_laporan, 100) }}</td>
                     <td class="border px-4 py-2">
                         <span class="px-2 py-1 rounded-full text-xs font-semibold
-                            {{ $pengaduan->status == '0' ? 'bg-yellow-100 text-yellow-800' :
-                               ($pengaduan->status == 'proses' ? 'bg-blue-100 text-blue-800' :
+                            {{ $putra_pengaduan->status == '0' ? 'bg-yellow-100 text-yellow-800' :
+                               ($putra_pengaduan->status == 'proses' ? 'bg-blue-100 text-blue-800' :
                                'bg-green-100 text-green-800') }}">
-                            {{ $pengaduan->status == '0' ? 'Menunggu' :
-                               ($pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
+                            {{ $putra_pengaduan->status == '0' ? 'Menunggu' :
+                               ($putra_pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
                         </span>
                     </td>
                     <td class="border px-4 py-2">
-                        @if($pengaduan->putra_tanggapan->isNotEmpty())
-                            {{ Str::limit($pengaduan->putra_tanggapan->last()->tanggapan, 100) }}
+                        @if($putra_pengaduan->putra_tanggapan->isNotEmpty())
+                            {{ Str::limit($putra_pengaduan->putra_tanggapan->last()->tanggapan, 100) }}
                         @else
                             -
                         @endif
@@ -76,7 +76,7 @@
 
         <!-- Footer -->
         <div class="text-right mb-8">
-            <p class="text-sm">Total Laporan: {{ $pengaduans->count() }}</p>
+            <p class="text-sm">Total Laporan: {{ $putra_pengaduans->count() }}</p>
             <p class="text-sm">Dicetak pada: {{ date('d F Y H:i:s') }}</p>
         </div>
 

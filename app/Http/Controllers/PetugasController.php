@@ -35,7 +35,7 @@ class PetugasController extends Controller
                 'unique:masyarakat,username'
             ],
             'putra_password' => 'required|string|min:6',
-            'putra_telp' => 'required|string|max:13',
+            'putra_telp' => 'required|string',
             'putra_level' => 'required'
         ]);
 
@@ -126,34 +126,7 @@ class PetugasController extends Controller
         return redirect()->route('MasterPetugas');
     }
 
-    public function AmbilLaporan($putra_stastus)
-    {
-        $putra_pengaduan = pengaduan::with('putra_masyarakat')->where('status', $putra_stastus)->get();
-        switch ($putra_stastus) {
-            case '0':
-                return view('admin.LaporanTerbaru', compact('putra_pengaduan'));
-            case 'proses':
-                return view('admin.LaporanProses', compact('putra_pengaduan'));
-            case 'selesai':
-                return view('admin.LaporanSelesai', compact('putra_pengaduan'));
-            default:
-                return view('admin.LaporanTerbaru', compact('putra_pengaduan'));
-        }
-    }
-    public function PetugasAmbilLaporan($putra_stastus)
-    {
-        $putra_pengaduan = pengaduan::with('putra_masyarakat')->where('status', $putra_stastus)->get();
-        switch ($putra_stastus) {
-            case '0':
-                return view('Petugas.LaporanTerbaru', compact('putra_pengaduan'));
-            case 'proses':
-                return view('Petugas.LaporanProses', compact('putra_pengaduan'));
-            case 'selesai':
-                return view('Petugas.LaporanSelesai', compact('putra_pengaduan'));
-            default:
-                return view('Petugas.LaporanTerbaru', compact('putra_pengaduan'));
-        }
-    }
+
     //admin======================================================
     public function konfirmasiLaporan($putra_idLaporan)
     {
@@ -192,6 +165,21 @@ class PetugasController extends Controller
 
         toast('Laporan Selesai', 'success');
         return redirect()->back();
+    }
+
+    public function AmbilLaporan($putra_stastus)
+    {
+        $putra_pengaduan = pengaduan::with('putra_masyarakat')->where('status', $putra_stastus)->get();
+        switch ($putra_stastus) {
+            case '0':
+                return view('admin.LaporanTerbaru', compact('putra_pengaduan'));
+            case 'proses':
+                return view('admin.LaporanProses', compact('putra_pengaduan'));
+            case 'selesai':
+                return view('admin.LaporanSelesai', compact('putra_pengaduan'));
+            default:
+                return view('admin.LaporanTerbaru', compact('putra_pengaduan'));
+        }
     }
     //petugas=============================================================
     public function konfirmasiLaporanPet($putra_idLaporan)
@@ -233,6 +221,21 @@ class PetugasController extends Controller
         return redirect()->back();
     }
 
+    public function PetugasAmbilLaporan($putra_stastus)
+    {
+        $putra_pengaduan = pengaduan::with('putra_masyarakat')->where('status', $putra_stastus)->get();
+        switch ($putra_stastus) {
+            case '0':
+                return view('Petugas.LaporanTerbaru', compact('putra_pengaduan'));
+            case 'proses':
+                return view('Petugas.LaporanProses', compact('putra_pengaduan'));
+            case 'selesai':
+                return view('Petugas.LaporanSelesai', compact('putra_pengaduan'));
+            default:
+                return view('Petugas.LaporanTerbaru', compact('putra_pengaduan'));
+        }
+    }
+    //================================================================
     public function HapusLaporanMasyarakat($putra_idLaporan)
     {
         $putra_pengaduan = pengaduan::findOrFail($putra_idLaporan);
@@ -241,8 +244,8 @@ class PetugasController extends Controller
         $putra_idAdmin = Auth::guard('petugas')->user()->id_petugas;
         $putra_namaAdmin = Auth::guard('petugas')->user()->nama_petugas;
         $user_type = 'petugas';
-        if(Auth::guard('admin')->check()){
-            $user_type = 'admin';
+        if (Auth::guard('petugas')->check()) {
+            $user_type = 'petugas';
         }
         actifitylog::create([
             'user_id' => $putra_idAdmin,
@@ -255,56 +258,56 @@ class PetugasController extends Controller
         return redirect()->back();
     }
 
-    public function Laporan(Request $request)
+    public function Laporan(Request $putra_request)
     {
         $query = Pengaduan::query();
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if ($putra_request->filled('status')) {
+            $query->where('status', $putra_request->status);
         }
 
-        if ($request->filled('start_date')) {
-            $query->where('tgl_pengaduan', '>=', $request->start_date);
+        if ($putra_request->filled('start_date')) {
+            $query->where('tgl_pengaduan', '>=', $putra_request->start_date);
         }
 
-        if ($request->filled('end_date')) {
-            $query->where('tgl_pengaduan', '<=', $request->end_date);
+        if ($putra_request->filled('end_date')) {
+            $query->where('tgl_pengaduan', '<=', $putra_request->end_date);
         }
 
-        $pengaduans = $query->orderBy('tgl_pengaduan', 'desc')->get();
+        $putra_pengaduans = $query->orderBy('tgl_pengaduan', 'desc')->get();
 
-        return view('admin.report', compact('pengaduans'));
+        return view('admin.report', compact('putra_pengaduans'));
     }
 
-    public function print($id)
+    public function print($putra_id)
     {
-        $pengaduan = Pengaduan::with(['putra_masyarakat', 'putra_tanggapan' => function($query) {
-            $query->with('petugas');
-        }])->findOrFail($id);
+        $putra_pengaduan = Pengaduan::with(['putra_masyarakat', 'putra_tanggapan' => function ($putra_query) {
+            $putra_query->with('petugas');
+        }])->findOrFail($putra_id);
 
         return view('admin.print', compact('pengaduan'));
     }
 
-    public function printAll(Request $request)
+    public function printAll(Request $putra_request)
     {
-        $query = Pengaduan::with(['putra_masyarakat', 'putra_tanggapan' => function($query) {
-            $query->with('putra_petugas');
+        $putra_query = Pengaduan::with(['putra_masyarakat', 'putra_tanggapan' => function ($putra_query) {
+            $putra_query->with('putra_petugas');
         }]);
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
+        if ($putra_request->filled('status')) {
+            $putra_query->where('status', $putra_request->status);
         }
 
-        if ($request->filled('start_date')) {
-            $query->where('tgl_pengaduan', '>=', $request->start_date);
+        if ($putra_request->filled('start_date')) {
+            $putra_query->where('tgl_pengaduan', '>=', $putra_request->start_date);
         }
 
-        if ($request->filled('end_date')) {
-            $query->where('tgl_pengaduan', '<=', $request->end_date);
+        if ($putra_request->filled('end_date')) {
+            $putra_query->where('tgl_pengaduan', '<=', $putra_request->end_date);
         }
 
-        $pengaduans = $query->orderBy('tgl_pengaduan', 'desc')->get();
+        $putra_pengaduans = $putra_query->orderBy('tgl_pengaduan', 'desc')->get();
 
-        return view('admin.print-all', compact('pengaduans'));
+        return view('admin.print-all', compact('putra_pengaduans'));
     }
 }

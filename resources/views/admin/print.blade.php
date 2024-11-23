@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Pengaduan #{{ $pengaduan->id_pengaduan }}</title>
+    <title>Laporan Pengaduan #{{ $putra_pengaduan->id_pengaduan }}</title>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white min-h-screen">
@@ -48,15 +48,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex">
                         <span class="w-32 font-semibold">Nama Pelapor</span>
-                        <span>: {{ $pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</span>
+                        <span>: {{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</span>
                     </div>
                     <div class="flex">
                         <span class="w-32 font-semibold">NIK</span>
-                        <span>: {{ $pengaduan->nik }}</span>
+                        <span>: {{ $putra_pengaduan->nik }}</span>
                     </div>
                     <div class="flex">
                         <span class="w-32 font-semibold">No Hp</span>
-                        <span>: {{ $pengaduan->putra_masyarakat->telp ?? '-' }}</span>
+                        <span>: {{ $putra_pengaduan->putra_masyarakat->telp ?? '-' }}</span>
                     </div>
                 </div>
             </div>
@@ -67,21 +67,21 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="flex">
                         <span class="w-32 font-semibold">Nomor Pengaduan</span>
-                        <span>: {{ $pengaduan->id_pengaduan }}</span>
+                        <span>: {{ $putra_pengaduan->id_pengaduan }}</span>
                     </div>
                     <div class="flex">
                         <span class="w-32 font-semibold">Tanggal Pengaduan</span>
-                        <span>: {{ \Carbon\Carbon::parse($pengaduan->tgl_pengaduan)->translatedFormat('l, d F Y') }}</span>
+                        <span>: {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('l, d F Y') }}</span>
                     </div>
                     <div class="flex">
                         <span class="w-32 font-semibold">Status Pengaduan</span>
                         <span>:
                             <span class="px-3 py-1 rounded-full text-sm font-semibold
-                                {{ $pengaduan->status == '0' ? 'bg-yellow-100 text-yellow-800' :
-                                   ($pengaduan->status == 'proses' ? 'bg-blue-100 text-blue-800' :
+                                {{ $putra_pengaduan->status == '0' ? 'bg-yellow-100 text-yellow-800' :
+                                   ($putra_pengaduan->status == 'proses' ? 'bg-blue-100 text-blue-800' :
                                    'bg-green-100 text-green-800') }}">
-                                {{ $pengaduan->status == '0' ? 'Menunggu' :
-                                   ($pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
+                                {{ $putra_pengaduan->status == '0' ? 'Menunggu' :
+                                   ($putra_pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
                             </span>
                         </span>
                     </div>
@@ -91,27 +91,27 @@
             <!-- Isi Laporan -->
             <div class="mb-6">
                 <h3 class="font-bold border-b pb-2 mb-4">C. Isi Laporan</h3>
-                <p class="text-justify">{{ $pengaduan->isi_laporan }}</p>
+                <p class="text-justify">{{ $putra_pengaduan->isi_laporan }}</p>
             </div>
 
             <!-- Bukti Laporan -->
-            @if($pengaduan->foto)
+            @if($putra_pengaduan->foto)
             <div class="mb-6 flex">
                 <div class="mr-4">
                     <h3 class="font-bold border-b pb-2 mb-4">D. Bukti Laporan</h3>
-                    <img src="{{ asset('storage/'.$pengaduan->foto) }}"
+                    <img src="{{ asset('storage/'.$putra_pengaduan->foto) }}"
                          alt="Bukti foto pengaduan"
                          class="w-40 h-auto rounded-lg shadow-md">
-                    <p class="text-sm text-gray-600 mt-2">Bukti foto pengaduan - {{ \Carbon\Carbon::parse($pengaduan->tgl_pengaduan)->translatedFormat('d F Y') }}</p>
+                    <p class="text-sm text-gray-600 mt-2">Bukti foto pengaduan - {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('d F Y') }}</p>
                 </div>
             </div>
             @endif
 
             <!-- Tanggapan -->
-            @if($pengaduan->putra_tanggapan->isNotEmpty())
+            @if($putra_pengaduan->putra_tanggapan->isNotEmpty())
             <div class="mb-6">
                 <h3 class="font-bold border-b pb-2 mb-4">E. Tanggapan</h3>
-                @foreach($pengaduan->putra_tanggapan as $tanggapan)
+                @foreach($putra_pengaduan->putra_tanggapan as $tanggapan)
                 <div class="mb-4 p-4 bg-gray-50 rounded-lg">
                     <div class="flex justify-between items-center mb-2">
                         <span class="font-semibold">{{ $tanggapan->petugas->nama_petugas }}</span>
@@ -129,7 +129,7 @@
             <p class="text-sm text-gray-600">Bandung, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
             <p class="text-sm text-gray-600">Pelapor,</p>
             <div class="h-16"></div>
-            <p class="font-semibold -mt-1">{{ $pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</p>
+            <p class="font-semibold -mt-1">{{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</p>
         </div>
 
         <!-- Print Buttons -->

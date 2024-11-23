@@ -13,9 +13,9 @@ use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(Request $putra_request)
     {
-        $request->validate(
+        $putra_request->validate(
             [
                 'putra_nik' => 'required|unique:masyarakat,nik|size:16',
                 'putra_nama' => 'required|max:35',
@@ -37,11 +37,11 @@ class AuthController extends Controller
         );
 
         Masyarakat::create([
-            'nik' => $request->putra_nik,
-            'nama' => $request->putra_nama,
-            'username' => $request->putra_username,
-            'password' => Hash::make($request->putra_password),
-            'telp' => $request->putra_telp
+            'nik' => $putra_request->putra_nik,
+            'nama' => $putra_request->putra_nama,
+            'username' => $putra_request->putra_username,
+            'password' => Hash::make($putra_request->putra_password),
+            'telp' => $putra_request->putra_telp
         ]);
         toast('Berhasil registrasi silahkan login', 'success');
         return redirect(route('login'));
@@ -53,29 +53,29 @@ class AuthController extends Controller
         'putra_password' => 'required',
     ]);
 
-    $user = Petugas::where('username', $putra_request->putra_username)->first();
+    $putra_user = Petugas::where('username', $putra_request->putra_username)->first();
 
-    if ($user) {
-        if (Hash::check($putra_request->putra_password, $user->password)) {
-            if ($user->level == 'admin') {
-                Auth::guard('petugas')->login($user);
+    if ($putra_user) {
+        if (Hash::check($putra_request->putra_password, $putra_user->password)) {
+            if ($putra_user->level == 'admin') {
+                Auth::guard('petugas')->login($putra_user);
                 toast('Selamat datang!', 'success');
                 return redirect('/admin');
-            } elseif ($user->level == 'petugas') {
-                Auth::guard('petugas')->login($user);
+            } elseif ($putra_user->level == 'petugas') {
+                Auth::guard('petugas')->login($putra_user);
                 toast('Selamat datang!', 'success');
                 return redirect('/petugas');
             } else {
-                Auth::guard('masyarakat')->login($user);
+                Auth::guard('masyarakat')->login($putra_user);
                 toast('Selamat datang!', 'success');
                 return redirect('/masyarakat');
             }
         }
     } else {
-        $user = Masyarakat::where('username', $putra_request->putra_username)->first();
-        if ($user) {
-            if (Hash::check($putra_request->putra_password, $user->password)) {
-                Auth::guard('masyarakat')->login($user);
+        $putra_user = Masyarakat::where('username', $putra_request->putra_username)->first();
+        if ($putra_user) {
+            if (Hash::check($putra_request->putra_password, $putra_user->password)) {
+                Auth::guard('masyarakat')->login($putra_user);
                 toast('Selamat datang!', 'success');
                 return redirect('/masyarakat');
             }else{

@@ -5,7 +5,7 @@
     <h1 class="text-3xl font-bold mb-6">Laporan Pengaduan</h1>
 
     <!-- Filter Form -->
-    <form action="{{ route('report.index') }}" method="GET" class="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form action="{{ route('report.index') }}" method="GET" class="mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8">
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="status">
@@ -64,26 +64,26 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($pengaduans as $pengaduan)
+                @foreach($putra_pengaduans as $putra_pengaduan_item)
                 <tr>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {{ $pengaduan->id_pengaduan }}
+                        {{ $putra_pengaduan_item->id_pengaduan }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {{ $pengaduan->tgl_pengaduan }}
+                        {{ $putra_pengaduan_item->tgl_pengaduan }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {{ $pengaduan->nik }}
+                        {{ $putra_pengaduan_item->nik }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {{ Str::limit($pengaduan->isi_laporan, 50) }}
+                        {{ Str::limit($putra_pengaduan_item->isi_laporan, 50) }}
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        @if($pengaduan->status == '0')
+                        @if($putra_pengaduan_item->status == '0')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                 Menunggu
                             </span>
-                        @elseif($pengaduan->status == 'proses')
+                        @elseif($putra_pengaduan_item->status == 'proses')
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                 Proses
                             </span>
@@ -94,7 +94,7 @@
                         @endif
                     </td>
                     <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <button onclick="printReport({{ $pengaduan->id_pengaduan }})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        <button onclick="printReport({{ $putra_pengaduan_item->id_pengaduan }})" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                             Print
                         </button>
                     </td>

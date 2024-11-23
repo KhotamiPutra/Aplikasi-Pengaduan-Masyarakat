@@ -13,12 +13,12 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($actifitylog as $log)
+                @forelse ($putra_actifitylog as $putra_log)
                     <tr>
-                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $log->user_type }}</td>
-                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $log->action }}</td>
-                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $log->description }}</td>
-                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $log->created_at }}</td>
+                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $putra_log->user_type }}</td>
+                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $putra_log->action }}</td>
+                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $putra_log->description }}</td>
+                        <td class="py-2 px-4 border-b-2 border-gray-200">{{ $putra_log->created_at }}</td>
                     </tr>
                 @empty
                     <tr>

@@ -14,7 +14,7 @@
                             </label>
                             <input type="text" name="putra_nik"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nik') border-red-500 @enderror"
-                                value="{{ old('putra_nik') }}"
+                                value="{{ old('putra_nik') ?? '' }}"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             @error('putra_nik')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -27,7 +27,7 @@
                             </label>
                             <input type="text" name="putra_nama"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('nama') border-red-500 @enderror"
-                                value="{{ old('putra_nama') }}">
+                                value="{{ old('putra_nama') ?? '' }}">
                             @error('putra_nama')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror
@@ -39,7 +39,7 @@
                             </label>
                             <input type="text" name="putra_username"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('username') border-red-500 @enderror"
-                                value="{{ old('putra_username') }}">
+                                value="{{ old('putra_username') ?? '' }}">
                             @error('putra_username')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
                             @enderror
@@ -62,7 +62,7 @@
                             </label>
                             <input type="text" name="putra_telp"
                                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline @error('telp') border-red-500 @enderror"
-                                value="{{ old('putra_telp') }}"
+                                value="{{ old('putra_telp') ?? '' }}"
                                 oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             @error('telp')
                                 <p class="text-red-500 text-xs italic">{{ $message }}</p>
@@ -85,3 +85,4 @@
         </div>
     </div>
 @endsection
+

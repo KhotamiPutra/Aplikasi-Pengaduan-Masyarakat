@@ -10,24 +10,24 @@ use Illuminate\Support\Facades\Auth;
 
 class TanggapanController extends Controller
 {
-    public function create($id)
+    public function create($putra_id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
-        $tanggapan = Tanggapan::where('id_pengaduan', $id)
+        $putra_pengaduan = Pengaduan::findOrFail($putra_id);
+        $putra_tanggapan = Tanggapan::where('id_pengaduan', $putra_id)
             ->with('putra_petugas')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('admin.tanggapan', compact('pengaduan', 'tanggapan'));
+        return view('admin.tanggapan', compact('putra_pengaduan', 'putra_tanggapan'));
     }
 
-    public function Petugascreate($id)
+    public function Petugascreate($putra_id)
     {
-        $pengaduan = Pengaduan::findOrFail($id);
-        $tanggapan = Tanggapan::where('id_pengaduan', $id)
+        $putra_pengaduan = Pengaduan::findOrFail($putra_id);
+        $putra_tanggapan = Tanggapan::where('id_pengaduan', $putra_id)
             ->with('putra_petugas')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('Petugas.tanggapan', compact('pengaduan', 'tanggapan'));
+        return view('Petugas.tanggapan', compact('putra_pengaduan', 'putra_tanggapan'));
     }
     public function ambiltanggapan($putra_idpengaduan)
     {
@@ -35,36 +35,33 @@ class TanggapanController extends Controller
         return response()->json($putra_tanggapan);
     }
 
-    public function store(Request $request, $id_pengaduan)
+    public function store(Request $putra_request, $putra_id_pengaduan)
     {
-        // Validasi input
-        $request->validate([
-            'tanggapan' => 'required|string',
+        $putra_request->validate([
+            'putra_tanggapan' => 'required|string',
         ]);
 
-        // Buat data tanggapan
         Tanggapan::create([
-            'id_pengaduan' => $id_pengaduan,
+            'id_pengaduan' => $putra_id_pengaduan,
             'tgl_tanggapan' => now(),
-            'tanggapan' => $request->tanggapan,
+            'tanggapan' => $putra_request->putra_tanggapan,
             'id_petugas' => Auth::guard('petugas')->id(),
         ]);
 
-        $putra_pengaduan = Pengaduan::findOrFail($id_pengaduan);
+        $putra_pengaduan = Pengaduan::findOrFail($putra_id_pengaduan);
         $putra_idAdmin = Auth::guard('petugas')->user()->id_petugas;
         $putra_namaAdmin = Auth::guard('petugas')->user()->nama_petugas;
-        $user_type = 'petugas';
+        $putra_user_type = 'petugas';
         if (Auth::guard('petugas')->check()) {
-            $user_type = 'admin';
+            $putra_user_type = 'admin';
         }
         actifitylog::create([
             'user_id' => $putra_idAdmin,
-            'user_type' => $user_type,
+            'user_type' => $putra_user_type,
             'action' => 'Menanggapi Laporan',
-            'description' => "{$user_type} bernama {$putra_namaAdmin} telah Menanggapi laporan {$putra_pengaduan->putra_nik}"
+            'description' => "{$putra_user_type} bernama {$putra_namaAdmin} telah Menanggapi laporan {$putra_pengaduan->putra_nik}"
         ]);
         toast('Tanggapan berhasil dikirim', 'success');
-        // Redirect dengan pesan sukses
         return redirect()->back();
     }
 }
