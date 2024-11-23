@@ -3,6 +3,13 @@
 @section('content')
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-4">Data Masyarakat</h2>
+        <form method="GET" action="{{ route('cariMas.index') }}" class="mb-4">
+            <input type="text" name="putra_cari" value="{{ request()->get('putra_cari') }}" placeholder="Cari petugas..."
+                class="px-4 py-2 border rounded w-1/3" />
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Cari
+            </button>
+        </form>
 
         <a href="{{ route('masyarakat.create') }}" class="px-4 py-2 bg-[#D97757] text-white rounded hover:bg-[#bf6443]">
             Tambah Masyarakat

@@ -10,6 +10,6 @@ class ActivityLogController extends Controller
     public function index()
     {
         $putra_actifitylog = actifitylog::all();
-        return view('admin.activitylog', compact('actifitylog'));
+        return view('admin.activitylog', compact('putra_actifitylog'));
     }
 }

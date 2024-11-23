@@ -39,9 +39,8 @@ Route::post('/login/post', [AuthController::class, 'login'])->name('login.post')
 
 
 //admin
-Route::get('/admin', function () {
-    return view('admin.dashboard');
-})->name('adminIndex');
+Route::get('/admin', [PetugasController::class, 'buatdashboardadmin'])->name('adminIndex');
+
 //Route crud masyarakat
 Route::get('/admin/MasterMasyarakat', [MasyarakatController::class, 'index'])->name('MasterMasyarakat');
 Route::get('/admin/create/masyarakat', [MasyarakatController::class, 'create'])->name('masyarakat.create');
@@ -69,6 +68,9 @@ Route::get('/report', [PetugasController::class, 'Laporan'])->name('report.index
 Route::get('/report/print/{id}', [PetugasController::class, 'print'])->name('laporan.print');
 Route::get('/report/print-all', [PetugasController::class, 'printAll'])->name('laporan.printAll');
 
+Route::get('/cari', [PetugasController::class, 'cari'])->name('cari.index');
+Route::get('/cariMas', [MasyarakatController::class, 'cariMas'])->name('cariMas.index');
+
 //masyarakat
 Route::get('/masyarakat', function () {
     return view('Masyarakat.lapor');
@@ -88,9 +90,8 @@ Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('act
 
 
 //petugas
-Route::get('/petugas', function () {
-    return view('Petugas.dashboard');
-})->name('petugasIndex');
+Route::get('/petugas', [PetugasController::class, 'buatdashboardpetugas'])->name('petugasIndex');
+
 Route::get('/petugas/laporan{status}', [PetugasController::class, 'PetugasAmbilLaporan'])->name('Petugaslaporan.index');
 Route::get('petugas/laporan/konfirmasi/{putra_idLaporan}', [PetugasController::class, 'konfirmasiLaporanPet'])->name('laporan.konfirmasPet');
 Route::get('/petugas/laporanSelesai/Petugas/{id_laporan}', [PetugasController::class, 'LaporanSelesaiPet'])->name('laporanSelesai.Petugas');

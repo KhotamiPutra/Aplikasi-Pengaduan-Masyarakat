@@ -1,148 +1,170 @@
-<style>
-    @media print {
-        @page {
-            size: A4;
-            margin: 0;
-        }
-
-        body {
-            margin: 0;
-        }
-
-        .print-hidden {
-            display: none;
-        }
-    }
-</style>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Laporan Pengaduan #{{ $putra_pengaduan->id_pengaduan }}</title>
-    @vite('resources/css/app.css')
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 0;
+            }
+            body {
+                margin: 0;
+                padding: 10mm;
+                font-size: 10pt;
+                line-height: 1.3;
+            }
+            .print-hidden {
+                display: none;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .logo {
+            width: 60px;
+            height: auto;
+            float: left;
+            margin-right: 10px;
+        }
+        .header-text {
+            text-align: left;
+        }
+        .content {
+            clear: both;
+        }
+        .section {
+            margin-bottom: 15px;
+        }
+        .section-title {
+            font-weight: bold;
+            border-bottom: 1px solid black;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .label {
+            font-weight: bold;
+            width: 120px;
+            display: inline-block;
+        }
+        .status {
+            display: inline-block;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+        .status-waiting { background-color: #FEF3C7; color: #92400E; }
+        .status-process { background-color: #DBEAFE; color: #1E40AF; }
+        .status-done { background-color: #D1FAE5; color: #065F46; }
+        .evidence-image {
+            width: 100px;
+            height: auto;
+        }
+        .response {
+            background-color: #F3F4F6;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: right;
+        }
+    </style>
 </head>
-<body class="bg-white min-h-screen">
-    <div class="max-w-4xl mx-auto p-8">
-        <!-- Header -->
-        <div class="text-center border-b-2 border-black pb-6 mb-8">
-            <div class="flex items-center justify-center mb-4">
-                <img src="{{ asset('asset/images/images-removebg-preview.png') }}" alt="Logo" class="w-24 h-auto mr-4">
-                <div class="text-left">
-                    <h1 class="text-lg font-bold">PEMERINTAH KABUPATEN BANDUNG</h1>
-                    <h2 class="text-base">DINAS KOMUNIKASI, INFORMATIKA DAN STATISTIK</h2>
-                    <h3 class="text-base font-semibold">LAPOR MAS</h3>
-                    <p class="text-sm">LAYANAN PENGADUAN MASYARAKAT</p>
-                    <p class="text-xs mt-1">Jl. Raya Soreang KM.17, Pamekaran, Kec. Soreang, Kabupaten Bandung</p>
-                    <p class="text-xs">Telepon: (022) 5897237 | Email: diskominfo@bandungkab.go.id</p>
+<body>
+    <div class="header">
+        <img src="{{ asset('asset/images/images-removebg-preview.png') }}" alt="Logo" class="logo">
+        <div class="header-text">
+            <h1 style="font-size: 14pt; margin: 0;">PEMERINTAH KABUPATEN BANDUNG</h1>
+            <h2 style="font-size: 12pt; margin: 0;">DINAS KOMUNIKASI, INFORMATIKA DAN STATISTIK</h2>
+            <h3 style="font-size: 12pt; margin: 0;">LAPOR MAS</h3>
+            <p style="font-size: 10pt; margin: 0;">LAYANAN PENGADUAN MASYARAKAT</p>
+            <p style="font-size: 8pt; margin: 0;">Jl. Raya Soreang KM.17, Pamekaran, Kec. Soreang, Kabupaten Bandung</p>
+            <p style="font-size: 8pt; margin: 0;">Telepon: (022) 5897237 | Email: diskominfo@bandungkab.go.id</p>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <h3 class="section-title">A. Profil Pelapor</h3>
+            <div class="grid">
+                <div><span class="label">Nama Pelapor</span>: {{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</div>
+                <div><span class="label">NIK</span>: {{ $putra_pengaduan->nik }}</div>
+                <div><span class="label">No Hp</span>: {{ $putra_pengaduan->putra_masyarakat->telp ?? '-' }}</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h3 class="section-title">B. Informasi Pengaduan</h3>
+            <div class="grid">
+                <div><span class="label">Nomor Pengaduan</span>: {{ $putra_pengaduan->id_pengaduan }}</div>
+                <div><span class="label">Tanggal Pengaduan</span>: {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('d F Y') }}</div>
+                <div>
+                    <span class="label">Status Pengaduan</span>:
+                    <span class="status {{ $putra_pengaduan->status == '0' ? 'status-waiting' : ($putra_pengaduan->status == 'proses' ? 'status-process' : 'status-done') }}">
+                        {{ $putra_pengaduan->status == '0' ? 'Menunggu' : ($putra_pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
+                    </span>
                 </div>
             </div>
         </div>
 
-        <!-- Content -->
-        <div class="mb-8">
-            <!-- Profil Pelapor -->
-            <div class="mb-6">
-                <h3 class="font-bold border-b pb-2 mb-4">A. Profil Pelapor</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex">
-                        <span class="w-32 font-semibold">Nama Pelapor</span>
-                        <span>: {{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-32 font-semibold">NIK</span>
-                        <span>: {{ $putra_pengaduan->nik }}</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-32 font-semibold">No Hp</span>
-                        <span>: {{ $putra_pengaduan->putra_masyarakat->telp ?? '-' }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Informasi Pengaduan -->
-            <div class="mb-6">
-                <h3 class="font-bold border-b pb-2 mb-4">B. Informasi Pengaduan</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="flex">
-                        <span class="w-32 font-semibold">Nomor Pengaduan</span>
-                        <span>: {{ $putra_pengaduan->id_pengaduan }}</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-32 font-semibold">Tanggal Pengaduan</span>
-                        <span>: {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('l, d F Y') }}</span>
-                    </div>
-                    <div class="flex">
-                        <span class="w-32 font-semibold">Status Pengaduan</span>
-                        <span>:
-                            <span class="px-3 py-1 rounded-full text-sm font-semibold
-                                {{ $putra_pengaduan->status == '0' ? 'bg-yellow-100 text-yellow-800' :
-                                   ($putra_pengaduan->status == 'proses' ? 'bg-blue-100 text-blue-800' :
-                                   'bg-green-100 text-green-800') }}">
-                                {{ $putra_pengaduan->status == '0' ? 'Menunggu' :
-                                   ($putra_pengaduan->status == 'proses' ? 'Proses' : 'Selesai') }}
-                            </span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Isi Laporan -->
-            <div class="mb-6">
-                <h3 class="font-bold border-b pb-2 mb-4">C. Isi Laporan</h3>
-                <p class="text-justify">{{ $putra_pengaduan->isi_laporan }}</p>
-            </div>
-
-            <!-- Bukti Laporan -->
-            @if($putra_pengaduan->foto)
-            <div class="mb-6 flex">
-                <div class="mr-4">
-                    <h3 class="font-bold border-b pb-2 mb-4">D. Bukti Laporan</h3>
-                    <img src="{{ asset('storage/'.$putra_pengaduan->foto) }}"
-                         alt="Bukti foto pengaduan"
-                         class="w-40 h-auto rounded-lg shadow-md">
-                    <p class="text-sm text-gray-600 mt-2">Bukti foto pengaduan - {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('d F Y') }}</p>
-                </div>
-            </div>
-            @endif
-
-            <!-- Tanggapan -->
-            @if($putra_pengaduan->putra_tanggapan->isNotEmpty())
-            <div class="mb-6">
-                <h3 class="font-bold border-b pb-2 mb-4">E. Tanggapan</h3>
-                @foreach($putra_pengaduan->putra_tanggapan as $tanggapan)
-                <div class="mb-4 p-4 bg-gray-50 rounded-lg">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-semibold">{{ $tanggapan->petugas->nama_petugas }}</span>
-                        <span class="text-sm text-gray-600">{{ \Carbon\Carbon::parse($tanggapan->tgl_tanggapan)->translatedFormat('d F Y') }}</span>
-                    </div>
-                    <p>{{ $tanggapan->tanggapan }}</p>
-                </div>
-                @endforeach
-            </div>
-            @endif
+        <div class="section">
+            <h3 class="section-title">C. Isi Laporan</h3>
+            <p>{{ $putra_pengaduan->isi_laporan }}</p>
         </div>
 
-        <!-- Footer -->
-        <div class="mt-9 text-right">
-            <p class="text-sm text-gray-600">Bandung, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
-            <p class="text-sm text-gray-600">Pelapor,</p>
-            <div class="h-16"></div>
-            <p class="font-semibold -mt-1">{{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</p>
+        @if($putra_pengaduan->foto)
+        <div class="section">
+            <h3 class="section-title">D. Bukti Laporan</h3>
+            <img src="{{ asset('storage/'.$putra_pengaduan->foto) }}" alt="Bukti foto pengaduan" class="evidence-image">
+            <p style="font-size: 8pt;">Bukti foto pengaduan - {{ \Carbon\Carbon::parse($putra_pengaduan->tgl_pengaduan)->translatedFormat('d F Y') }}</p>
         </div>
+        @endif
 
-        <!-- Print Buttons -->
-        <div class="mt-8 flex justify-center gap-4 print:hidden">
-            <button onclick="window.print()"
-                    class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
-                Cetak Laporan
-            </button>
-            <button onclick="window.close()"
-                    class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors">
-                Tutup
-            </button>
+        @if($putra_pengaduan->putra_tanggapan->isNotEmpty())
+        <div class="section">
+            <h3 class="section-title">E. Tanggapan</h3>
+            @foreach($putra_pengaduan->putra_tanggapan as $tanggapan)
+            <div class="response">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                    <span style="font-weight: bold;">{{ $tanggapan->putra_petugas->nama_petugas }}</span>
+                    <span style="font-size: 8pt;">{{ \Carbon\Carbon::parse($tanggapan->tgl_tanggapan)->translatedFormat('d F Y') }}</span>
+                </div>
+                <p style="margin: 0;">{{ $tanggapan->tanggapan }}</p>
+            </div>
+            @endforeach
         </div>
+        @endif
+    </div>
+
+    <div class="footer">
+        <p>Bandung, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>
+        <p>Pelapor,</p>
+        <div style="height: 40px;"></div>
+        <p style="font-weight: bold;">{{ $putra_pengaduan->putra_masyarakat->nama ?? 'Anonim' }}</p>
+    </div>
+
+    <div class="print-hidden" style="margin-top: 20px; text-align: center;">
+        <button onclick="window.print()" style="padding: 10px 20px; background-color: #10B981; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">
+            Cetak Laporan
+        </button>
+        <button onclick="window.close()" style="padding: 10px 20px; background-color: #EF4444; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Tutup
+        </button>
     </div>
 
     <script>

@@ -4,6 +4,15 @@
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-4">Data Petugas</h2>
 
+        <!-- Formulir Pencarian -->
+        <form method="GET" action="{{ route('cari.index') }}" class="mb-4">
+            <input type="text" name="putra_cari" value="{{ request()->get('putra_cari') }}" placeholder="Cari petugas..."
+                class="px-4 py-2 border rounded w-1/3" />
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                Cari
+            </button>
+        </form>
+
         <a href="{{ route('petugas.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
             Tambah petugas
         </a>
@@ -14,7 +23,7 @@
             </div>
         @endif
 
-        <!-- Tabel Data Masyarakat -->
+        <!-- Tabel Data Petugas -->
         <table class="table-auto w-full mt-4">
             <thead>
                 <tr>

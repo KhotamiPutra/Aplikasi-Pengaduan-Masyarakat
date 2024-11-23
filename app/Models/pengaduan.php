@@ -16,14 +16,20 @@ class pengaduan extends Model
         'isi_laporan',
         'foto',
         'status',
-    ] ;
-
-
-    public function putra_masyarakat(){
+    ];
+    protected $dates = ['deleted_at'];
+    public function putra_masyarakat()
+    {
         return $this->belongsTo(masyarakat::class, 'nik', 'nik');
     }
 
-    public function putra_tanggapan(){
+    public function putra_tanggapan()
+    {
         return $this->hasMany(tanggapan::class, 'id_pengaduan',);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(masyarakat::class, 'nik', 'nik');
     }
 }

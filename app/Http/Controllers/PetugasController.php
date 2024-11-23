@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\actifitylog;
+use App\Models\masyarakat;
 use App\Models\pengaduan;
 use App\Models\Petugas;
 use Illuminate\Http\Request;
@@ -181,6 +182,49 @@ class PetugasController extends Controller
                 return view('admin.LaporanTerbaru', compact('putra_pengaduan'));
         }
     }
+
+    public function buatdashboardadmin()
+    {
+        $putra_total_pengaduan = Pengaduan::count();
+
+        // Total semua pengaduan
+        $putra_total_pengaduan = Pengaduan::count();
+
+        // Total pengaduan minggu ini
+        $putra_total_minggu_ini = Pengaduan::whereBetween('created_at', [
+            now()->startOfWeek(),
+            now()->endOfWeek()
+        ])->count();
+
+        // Data pengaduan terbaru (10 terakhir)
+        $putra_pengaduan_terbaru = Pengaduan::with('user')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        // Pastikan semua variabel dikirim ke view
+        return view('admin.dashboard', [
+            'putra_total_pengaduan' => $putra_total_pengaduan,
+            'putra_total_minggu_ini' => $putra_total_minggu_ini,
+            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru
+        ]);
+    }
+
+    // public function cari_laporan(Request $putra_request)
+    // {
+    //     $putra_cari = $putra_request->get('putra_cari_laporan');
+
+    //     if ($putra_cari) {
+    //         $putra_pengaduan = Pengaduan::where('isi_laporan', 'like', '%' . $putra_cari . '%')
+    //             ->orderBy('tgl_pengaduan', 'desc')
+    //             ->get();
+    //     } else {
+    //         $putra_pengaduan = Pengaduan::orderBy('tgl_pengaduan', 'desc')->get();
+    //     }
+
+    //     return view('admin.LaporanProses', compact('putra_pengaduan'));
+    // }
+
     //petugas=============================================================
     public function konfirmasiLaporanPet($putra_idLaporan)
     {
@@ -235,6 +279,48 @@ class PetugasController extends Controller
                 return view('Petugas.LaporanTerbaru', compact('putra_pengaduan'));
         }
     }
+
+    public function buatdashboardpetugas()
+    {
+        $putra_total_pengaduan = Pengaduan::count();
+
+        // Total semua pengaduan
+        $putra_total_pengaduan = Pengaduan::count();
+
+        // Total pengaduan minggu ini
+        $putra_total_minggu_ini = Pengaduan::whereBetween('created_at', [
+            now()->startOfWeek(),
+            now()->endOfWeek()
+        ])->count();
+
+        // Data pengaduan terbaru (10 terakhir)
+        $putra_pengaduan_terbaru = Pengaduan::with('user')
+            ->latest()
+            ->take(10)
+            ->get();
+
+        // Pastikan semua variabel dikirim ke view
+        return view('Petugas.dashboard', [
+            'putra_total_pengaduan' => $putra_total_pengaduan,
+            'putra_total_minggu_ini' => $putra_total_minggu_ini,
+            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru
+        ]);
+    }
+
+    // public function cari_laporanPet(Request $putra_request)
+    // {
+    //     $putra_cari = $putra_request->get('putra_cari_laporan');
+
+    //     if ($putra_cari) {
+    //         $putra_pengaduan = Pengaduan::where('isi_laporan', 'like', '%' . $putra_cari . '%')
+    //             ->orderBy('tgl_pengaduan', 'desc')
+    //             ->get();
+    //     } else {
+    //         $putra_pengaduan = Pengaduan::orderBy('tgl_pengaduan', 'desc')->get();
+    //     }
+
+    //     return view('Petugas.LaporanProses', compact('putra_pengaduan'));
+    // }
     //================================================================
     public function HapusLaporanMasyarakat($putra_idLaporan)
     {
@@ -282,10 +368,10 @@ class PetugasController extends Controller
     public function print($putra_id)
     {
         $putra_pengaduan = Pengaduan::with(['putra_masyarakat', 'putra_tanggapan' => function ($putra_query) {
-            $putra_query->with('petugas');
+            $putra_query->with('putra_petugas');
         }])->findOrFail($putra_id);
 
-        return view('admin.print', compact('pengaduan'));
+        return view('admin.print', compact('putra_pengaduan'));
     }
 
     public function printAll(Request $putra_request)
@@ -309,5 +395,20 @@ class PetugasController extends Controller
         $putra_pengaduans = $putra_query->orderBy('tgl_pengaduan', 'desc')->get();
 
         return view('admin.print-all', compact('putra_pengaduans'));
+    }
+
+    public function cari(Request $putra_request)
+    {
+        $putra_cari = $putra_request->get('putra_cari');
+
+        if ($putra_cari) {
+            $putra_petugas = Petugas::where('nama_petugas', 'like', '%' . $putra_cari . '%')
+                ->orWhere('username', 'like', '%' . $putra_cari . '%')
+                ->get();
+        } else {
+            $putra_petugas = Petugas::all();
+        }
+
+        return view('admin.MasterPetugas', compact('putra_petugas'));
     }
 }

@@ -118,4 +118,19 @@ class MasyarakatController extends Controller
         toast('Data masyarakat berhasil dihapus', 'success');
         return redirect()->route('MasterMasyarakat');
     }
+
+    public function cariMas(Request $putra_request)
+    {
+        $putra_cari = $putra_request->get('putra_cari');
+
+        if ($putra_cari) {
+            $putra_masyarakat = masyarakat::where('nama', 'like', '%' . $putra_cari . '%')
+                ->orWhere('username', 'like', '%' . $putra_cari . '%')
+                ->get();
+        } else {
+            $putra_masyarakat = masyarakat::all(); // Mengambil semua data jika tidak ada pencarian
+        }
+
+        return view('admin.MasterMasyarakat', compact('putra_masyarakat')); // Pastikan menggunakan 'putra_masyarakat'
+    }
 }
