@@ -78,8 +78,6 @@ Route::get('/masyarakat', function () {
 Route::get('/masyarakat/detailLaporan', [PengaduanController::class, 'index'])->name('putra_detailPengaduan');
 Route::get('/masyarakat/create', [PengaduanController::class, 'create'])->name('laporan.create');
 Route::post('/masyarakat/store', [PengaduanController::class, 'store'])->name('laporan.store');
-// Route::get('/masyarakat/edit/{putra_idLaporan}', [PengaduanController::class, 'edit'])->name('laporan.edit');
-// Route::put('/masyarakat/update/{putra_idLaporan}', [PengaduanController::class, 'update'])->name('laporan.update');
 Route::delete('/masyarakat/delete/{putra_idLaporan}', [PengaduanController::class, 'destroy'])->name('laporan.destroy');
 
 Route::get('/panduan', function () {return view('Masyarakat.Panduan');})->name('panduan');

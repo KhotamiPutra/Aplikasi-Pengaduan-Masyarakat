@@ -8,6 +8,12 @@
 
     @vite('resources/css/app.css')
 
+    <style>
+        body {
+            overflow-x: hidden
+        }
+    </style>
+
     <div class="min-h-screen">
         <div class="relative bg-[#D97757] text-white py-16">
             <div class="container mx-auto px-4 text-center z-10 relative">

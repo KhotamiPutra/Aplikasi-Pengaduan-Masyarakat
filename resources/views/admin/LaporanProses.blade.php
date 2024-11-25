@@ -15,7 +15,7 @@
                             </div>
                             <div class="mb-2">
                                 <span class="text-sm font-semibold text-gray-600">Isi Laporan:</span>
-                                <p class="text-sm text-gray-800 mt-1">{{ $pengaduan->isi_laporan }}</p>
+                                <p class="text-sm text-gray-800 mt-1">{{ Str::limit($pengaduan->isi_laporan, 50)  }}</p>
                             </div>
                             <div class="mb-2">
                                 <span class="text-sm font-semibold text-gray-600">Foto:</span>

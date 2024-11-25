@@ -35,11 +35,6 @@ class PengaduanController extends Controller
      */
     public function store(Request $putra_request)
 {
-    // $putra_request->validate([
-    //     'putra_tanggal' => 'required|date',
-    //     'putra_laporan' => 'required',
-    //     'putra_gambar' => 'required|max:2048', // Validasi untuk file gambar
-    // ]);
     $putra_request->validate([
         'putra_gambar' => 'required',
     ]);

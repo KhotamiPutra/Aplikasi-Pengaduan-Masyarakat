@@ -25,8 +25,6 @@
                         class="text-gray-700 hover:text-[#D97757] transition duration-300">Beranda</a>
                     <a href="{{ route('putra_detailPengaduan') }}"
                         class="text-gray-700 hover:text-[#D97757] transition duration-300">Detail</a>
-                    <a href="#" class="text-gray-700 hover:text-[#D97757] transition duration-300">Status
-                        Laporan</a>
                     <a href="{{ route('panduan') }}" class="text-gray-700 hover:text-[#D97757] transition duration-300">Panduan</a>
                 </div>
 

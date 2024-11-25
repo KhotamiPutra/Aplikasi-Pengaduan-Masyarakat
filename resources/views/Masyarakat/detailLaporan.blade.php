@@ -14,7 +14,7 @@
                         <p class="text-gray-600 mb-4">
                             <span class="font-medium">Tanggal:</span> {{ $pp->tgl_pengaduan }}
                         </p>
-                        <p class="text-gray-700 mb-4">{{ $pp->isi_laporan }}</p>
+                        <p class="text-gray-700 mb-4">{{ Str::limit($pp->isi_laporan, 50) }}</p>
 
                         @if ($pp->foto)
                             <img src="{{ asset('storage/' . $pp->foto) }}" alt="Foto Laporan" class="w-full h-48 object-cover mb-4 rounded">
@@ -54,9 +54,8 @@
                                     onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition duration-300">
-                                        Hapus
+                                    <button type="submit" class="transition duration-300 flex items-center">
+                                        <img src="{{ asset('asset/images/delete.png') }}" alt="Hapus" class="w-6 h-6">
                                     </button>
                                 </form>
                                 @if(Auth::guard('petugas')->check())
