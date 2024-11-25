@@ -186,44 +186,23 @@ class PetugasController extends Controller
     public function buatdashboardadmin()
     {
         $putra_total_pengaduan = Pengaduan::count();
-
-        // Total semua pengaduan
         $putra_total_pengaduan = Pengaduan::count();
-
-        // Total pengaduan minggu ini
         $putra_total_minggu_ini = Pengaduan::whereBetween('created_at', [
             now()->startOfWeek(),
             now()->endOfWeek()
         ])->count();
-
-        // Data pengaduan terbaru (10 terakhir)
         $putra_pengaduan_terbaru = Pengaduan::with('user')
             ->latest()
             ->take(10)
             ->get();
-
-        // Pastikan semua variabel dikirim ke view
+        $putra_pengaduan_selesai = Pengaduan::where('status', 'selesai')->count();
         return view('admin.dashboard', [
             'putra_total_pengaduan' => $putra_total_pengaduan,
             'putra_total_minggu_ini' => $putra_total_minggu_ini,
-            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru
+            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru,
+            'putra_pengaduan_selesai' => $putra_pengaduan_selesai
         ]);
     }
-
-    // public function cari_laporan(Request $putra_request)
-    // {
-    //     $putra_cari = $putra_request->get('putra_cari_laporan');
-
-    //     if ($putra_cari) {
-    //         $putra_pengaduan = Pengaduan::where('isi_laporan', 'like', '%' . $putra_cari . '%')
-    //             ->orderBy('tgl_pengaduan', 'desc')
-    //             ->get();
-    //     } else {
-    //         $putra_pengaduan = Pengaduan::orderBy('tgl_pengaduan', 'desc')->get();
-    //     }
-
-    //     return view('admin.LaporanProses', compact('putra_pengaduan'));
-    // }
 
     //petugas=============================================================
     public function konfirmasiLaporanPet($putra_idLaporan)
@@ -283,44 +262,23 @@ class PetugasController extends Controller
     public function buatdashboardpetugas()
     {
         $putra_total_pengaduan = Pengaduan::count();
-
-        // Total semua pengaduan
         $putra_total_pengaduan = Pengaduan::count();
-
-        // Total pengaduan minggu ini
         $putra_total_minggu_ini = Pengaduan::whereBetween('created_at', [
             now()->startOfWeek(),
             now()->endOfWeek()
         ])->count();
-
-        // Data pengaduan terbaru (10 terakhir)
         $putra_pengaduan_terbaru = Pengaduan::with('user')
             ->latest()
             ->take(10)
             ->get();
-
-        // Pastikan semua variabel dikirim ke view
+        $putra_pengaduan_selesai = Pengaduan::where('status', 'selesai')->count();
         return view('Petugas.dashboard', [
             'putra_total_pengaduan' => $putra_total_pengaduan,
             'putra_total_minggu_ini' => $putra_total_minggu_ini,
-            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru
+            'putra_pengaduan_terbaru' => $putra_pengaduan_terbaru,
+            'putra_pengaduan_selesai' => $putra_pengaduan_selesai
         ]);
     }
-
-    // public function cari_laporanPet(Request $putra_request)
-    // {
-    //     $putra_cari = $putra_request->get('putra_cari_laporan');
-
-    //     if ($putra_cari) {
-    //         $putra_pengaduan = Pengaduan::where('isi_laporan', 'like', '%' . $putra_cari . '%')
-    //             ->orderBy('tgl_pengaduan', 'desc')
-    //             ->get();
-    //     } else {
-    //         $putra_pengaduan = Pengaduan::orderBy('tgl_pengaduan', 'desc')->get();
-    //     }
-
-    //     return view('Petugas.LaporanProses', compact('putra_pengaduan'));
-    // }
     //================================================================
     public function HapusLaporanMasyarakat($putra_idLaporan)
     {

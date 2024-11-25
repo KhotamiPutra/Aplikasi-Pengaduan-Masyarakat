@@ -12,7 +12,7 @@
     </div>
     <div class="bg-white shadow-md rounded p-6">
         <h2 class="text-lg font-semibold mb-4 text-[#D97757]">Pengaduan Selesai</h2>
-        <p class="text-4xl font-bold">75</p>
+        <p class="text-4xl font-bold">{{ $putra_pengaduan_selesai }}</p>
     </div>
 </div>
 

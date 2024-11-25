@@ -4,15 +4,6 @@
     <div class="container mx-auto px-4 py-8">
         <h2 class="text-2xl font-bold mb-6 text-center">Laporan Proses</h2>
 
-        <form method="GET" action="{{ route('laporanProsesPet.index') }}" class="mb-6">
-            <div class="flex justify-center">
-                <input type="text" name="putra_cari_laporan" value="{{ request()->get('putra_cari_laporan') }}" placeholder="Cari Isi Laporan..."
-                    class="px-4 py-2 border rounded w-1/3" />
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
-                    Cari
-                </button>
-            </div>
-        </form>
 
         @if ($putra_pengaduan->count() > 0)
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
