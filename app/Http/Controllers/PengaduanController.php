@@ -69,7 +69,7 @@ class PengaduanController extends Controller
     }
     $putra_pengaduan->delete();
     toast('Laporan berhasil dihapus', 'success');
-    return redirect()->route('laporan.index');
+    return redirect()->back();
 }
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MobileAPIController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::get('/masyarakat', [MobileAPIController::class, 'index'])->name('index');
+Route::post('/register', [MobileAPIController::class, 'register'])->name('register');

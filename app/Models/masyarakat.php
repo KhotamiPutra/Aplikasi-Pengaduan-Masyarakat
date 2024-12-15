@@ -12,6 +12,7 @@ class masyarakat extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'masyarakat';
+    
 
     protected $fillable = [
         'nik',

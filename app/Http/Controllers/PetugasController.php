@@ -6,6 +6,7 @@ use App\Models\actifitylog;
 use App\Models\masyarakat;
 use App\Models\pengaduan;
 use App\Models\Petugas;
+use App\Models\tanggapan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -151,6 +152,11 @@ class PetugasController extends Controller
     public function LaporanSelesaiAdmin($putra_idLaporan)
     {
         $putra_pengaduan = pengaduan::findOrFail($putra_idLaporan);
+        $putra_tanggapan = tanggapan::where('id_pengaduan', $putra_idLaporan)->first();
+        if (!$putra_tanggapan) {
+            toast('Laporan harus memiliki tanggapan sebelum dapat diselesaikan', 'error');
+            return redirect()->back();
+        }
         $putra_pengaduan->update([
             'status' => 'selesai'
         ]);
@@ -227,6 +233,11 @@ class PetugasController extends Controller
     public function LaporanSelesaiPet($putra_idLaporan)
     {
         $putra_pengaduan = pengaduan::findOrFail($putra_idLaporan);
+        $putra_tanggapan = tanggapan::where('id_pengaduan', $putra_idLaporan)->first();
+        if (!$putra_tanggapan) {
+            toast('Laporan harus memiliki tanggapan sebelum dapat diselesaikan', 'error');
+            return redirect()->back();
+        }
         $putra_pengaduan->update([
             'status' => 'selesai'
         ]);
