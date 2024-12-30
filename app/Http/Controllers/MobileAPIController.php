@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\masyarakat;
 use App\Models\pengaduan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MobileAPIController extends Controller
 {
@@ -20,41 +21,41 @@ class MobileAPIController extends Controller
 
     public function register(Request $request)
     {
-        $validasi = $request->validate([
-            'nik' => 'required|string|max:16|unique:masyarakat,nik',
-            'nama' => 'required|string|max:255',
-            'username' => 'required|string|unique:masyarakat,username',
-            'password' => 'required|string|min:6',
-            'telp' => 'required|numeric',
-        ]);
-
-        $data = masyarakat::create([
-            'nik' => $validasi['nik'],
-            'nama' => $validasi['nama'],
-            'username' => $validasi['username'],
-            'password' => bcrypt($validasi['password']),
-            'telp' => $validasi['telp'],
+        $data = Masyarakat::create([
+            'nik' => $request->nik,
+            'nama' => $request->nama,
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'telp' => $request->telp,
         ]);
 
         return response()->json([
             'message' => 'success',
             'data' => $data,
-        ], 201);
+        ]);
     }
 
-    // $validatedData = $request->validate([
-    //     'nik' => 'required|string|max:16|unique:masyarakat,nik',
-    //     'nama' => 'required|string|max:255',
-    //     'username' => 'required|string|unique:masyarakat,username',
-    //     'password' => 'required|string|min:6',
-    //     'telp' => 'required|numeric',
-    // ]);
-    // $validatedData['password'] = bcrypt($validatedData['password']); // Enkripsi password
+    public function login(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string'
+        ]);
 
-    // $data = masyarakat::create($validatedData);
+        $user = masyarakat::where('username', $request->username)->first();
 
-    // return response()->json([
-    //     'message' => 'success',
-    //     'data' => $data
-    // ], 201);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'username atau password salah'
+            ], 401);
+        }
+
+        return response()->json([
+            'message' => 'login berhasil',
+            'user' => $user->nik,
+            'nama' => $user->nama,
+            'username' => $user->username,
+            'telp' => $user->telp
+        ]);
+    }
 }

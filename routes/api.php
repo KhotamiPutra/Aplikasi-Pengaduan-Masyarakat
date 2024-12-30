@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/masyarakat', [MobileAPIController::class, 'index'])->name('index');
 Route::post('/register', [MobileAPIController::class, 'register'])->name('register');
+Route::post('/check-username', [MobileAPIController::class, 'chekusername'])->name('chekusername');
+Route::post('/login',[MobileAPIController::class, 'login'])->name('login');
