@@ -52,7 +52,7 @@ class MobileAPIController extends Controller
 
         return response()->json([
             'message' => 'login berhasil',
-            'user' => $user->nik,
+            'nik' => $user->nik,
             'nama' => $user->nama,
             'username' => $user->username,
             'telp' => $user->telp
