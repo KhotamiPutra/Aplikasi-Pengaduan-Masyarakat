@@ -50,12 +50,15 @@ class MobileAPIController extends Controller
             ], 401);
         }
 
+        $token = $user->createToken('api-token')->plainTextToken;
+
         return response()->json([
             'message' => 'login berhasil',
             'nik' => $user->nik,
             'nama' => $user->nama,
             'username' => $user->username,
-            'telp' => $user->telp
+            'telp' => $user->telp,
+            'access_token' => $token,
         ]);
     }
 }
